@@ -153,5 +153,6 @@ notion-om-connector/
 
 ## 👨‍💻 Author
 
-**Monish Gowda**  
-Built for the [Hackathon Name/Event] 2024
+**Nishita Kumari** & **Monish Gowda**  
+Built for OpenMetadata's - Back to the Metadata Hackathon,
+April 2026
