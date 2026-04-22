@@ -1,5 +1,6 @@
 notion_config.yaml
 .notion_state.json
+.notion_om_state.json
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
