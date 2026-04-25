@@ -2,26 +2,12 @@
 
 ### Mapping the "Dark Matter" of Enterprise Metadata
 
-[](https://www.google.com/url?sa=E&q=https%3A%2F%2Fwww.python.org%2Fdownloads%2Frelease%2Fpython-3100%2F)
 
 [![alt text](https://img.shields.io/badge/python-3.10-blue.svg)](https://www.google.com/url?sa=E&q=https%3A%2F%2Fwww.python.org%2Fdownloads%2Frelease%2Fpython-3100%2F)
 
-  
-[
-
 ![alt text](https://img.shields.io/badge/OpenMetadata-1.2.4-green.svg)
 
-](https://www.google.com/url?sa=E&q=https%3A%2F%2Fopen-metadata.org%2F)  
-[
-
 ![alt text](https://img.shields.io/badge/Notion%20API-v1-black.svg)
-
-](https://www.google.com/url?sa=E&q=https%3A%2F%2Fdevelopers.notion.com%2F)  
-[
-
-![alt text](https://img.shields.io/badge/License-MIT-yellow.svg)
-
-](https://www.google.com/url?sa=E&q=https%3A%2F%2Fopensource.org%2Flicenses%2FMIT)
 
 > **"Dark Matter Metadata"**: Companies store critical business logic and roadmaps in Notion. To Data Teams, this data is invisible—lacking schema, governance, and traceability. **We brought it into the light.**
 
