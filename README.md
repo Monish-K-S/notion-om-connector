@@ -1,89 +1,94 @@
-# 🚀 Notion-OM Connector
+# Notion-OM Connector
 
 ### Mapping the "Dark Matter" of Enterprise Metadata
 
-Most companies store critical business logic, project roadmaps, and client data in **Notion**. However, to a Data Engineering team, this data is "Dark Matter"—it is invisible to the official data catalog, lacks schema enforcement, and has no traceable lineage.
+[](https://www.google.com/url?sa=E&q=https%3A%2F%2Fwww.python.org%2Fdownloads%2Frelease%2Fpython-3100%2F)
 
-The **Notion-OM Connector** is a production-grade ingestion engine that bridges this gap. Built using the official **OpenMetadata (OM) Source Protocol**, it extracts Notion databases, maps complex types, and reconstructs visual lineage graphs directly within the OpenMetadata ecosystem.
+[![alt text](https://img.shields.io/badge/python-3.10-blue.svg)](https://www.google.com/url?sa=E&q=https%3A%2F%2Fwww.python.org%2Fdownloads%2Frelease%2Fpython-3100%2F)
+
+  
+[
+
+![alt text](https://img.shields.io/badge/OpenMetadata-1.2.4-green.svg)
+
+](https://www.google.com/url?sa=E&q=https%3A%2F%2Fopen-metadata.org%2F)  
+[
+
+![alt text](https://img.shields.io/badge/Notion%20API-v1-black.svg)
+
+](https://www.google.com/url?sa=E&q=https%3A%2F%2Fdevelopers.notion.com%2F)  
+[
+
+![alt text](https://img.shields.io/badge/License-MIT-yellow.svg)
+
+](https://www.google.com/url?sa=E&q=https%3A%2F%2Fopensource.org%2Flicenses%2FMIT)
+
+> **"Dark Matter Metadata"**: Companies store critical business logic and roadmaps in Notion. To Data Teams, this data is invisible—lacking schema, governance, and traceability. **We brought it into the light.**
+
+The **Notion-OM Connector** is a production-grade ingestion engine that bridges the gap between Notion’s flexible workspace and OpenMetadata’s governed ecosystem.
 
 ---
 
-## 🌟 Key Features
+## 🌟 Key Pillars
 
-- **Automated Lineage:** Detects Notion Relation properties and automatically draws transitive (multi-hop) visual graphs (e.g., Clients → Projects → Tasks).
-    
-- **Stateful Ingestion:** Implements **Incremental Sync** via a local state manager (.notion_state.json) to only process databases that have changed since the last run.
-    
-- **Resilient Design:** Integrated with **Exponential Backoff** to gracefully handle Notion’s strict 3 requests/second rate limits.
-    
-- **Production Hierarchy:** Respects the OpenMetadata 4-tier hierarchy: Service ➔ Database ➔ Schema ➔ Table.
-    
-- **Rich CLI Interface:** Provides a beautiful, color-coded terminal dashboard for real-time ingestion monitoring.
-    
+|   |   |
+|---|---|
+|Feature|Description|
+|🔗 **Automated Lineage**|Detects Relation properties to draw multi-hop visual graphs (e.g., Clients → Projects → Tasks).|
+|💾 **Stateful Ingestion**|Incremental Sync via .notion_state.json ensures only modified tables are processed.|
+|🛡️ **Resilient Design**|Integrated **Exponential Backoff** to handle Notion’s strict 3 req/s rate limits.|
+|🏛 **OM Hierarchy**|Strictly follows the 4-tier standard: Service ➔ Database ➔ Schema ➔ Table.|
+|🖥️ **Rich CLI UI**|Color-coded terminal dashboard for real-time monitoring of ingestion status.|
 
 ---
 
 ## 🏗 System Architecture
 
-The connector follows a **Two-Pass Ingestion Strategy** to solve the "UUID Paradox" in OpenMetadata:
+We implemented a custom **Three-Pass Ingestion Strategy** to overcome the "UUID Paradox" inherent in modern metadata catalogs:
 
-1. **Discovery Pass:** Scans Notion, creates Service/Database/Schema entities, and registers Tables. It captures the **Server-Generated UUIDs** for every table.
+1. **Discovery Pass**: Scans Notion, creates the OM hierarchy, and registers Tables. Crucially, it captures the **Server-Generated UUIDs** in real-time.
     
-2. **Rescue Pass:** Fetches related databases by ID that may have been hidden from initial search results due to Notion’s unique permission scoping.
+2. **Rescue Pass**: Notion's search API often misses relation targets. We implemented a proactive rescue layer using databases.retrieve to force-fetch metadata for specific IDs.
     
-3. **Lineage Pass:** Uses the captured UUIDs to stitch together the AddLineageRequest objects, ensuring perfect graph rendering even if tables were skipped during incremental sync.
+3. **Lineage Pass**: Uses the loopback dictionary of captured UUIDs to stitch together AddLineageRequest objects, ensuring the visual graph connects even if tables were skipped during incremental sync.
     
 
 ---
 
 ## 🛠 Prerequisites
 
-- **Python 3.10:** (Required to avoid Regex compatibility issues with the OM SDK on version 3.11+).
+- **Python 3.10** (Critical for SDK Regex compatibility).
     
-- **Docker Desktop:** For running the OpenMetadata stack.
+- **Docker Desktop** (To host the OpenMetadata stack).
     
-- **Notion Integration Token:** Created via [notion.so/my-integrations](https://www.google.com/url?sa=E&q=https%3A%2F%2Fwww.notion.so%2Fmy-integrations).
-    
-
----
-
-## 📥 Installation
-
-1. **Clone the repository:**
-    
-    codeBash
-    
-    ```
-    git clone <your-repo-url>
-    cd notion-om-connector
-    ```
-    
-2. **Create a Python 3.10 Virtual Environment:**
-    
-    codeBash
-    
-    ```
-    python3.10 -m venv venv
-    source venv/bin/activate
-    ```
-    
-3. **Install the "Safe Stack" (Pinned Dependencies):**
-    
-    codeBash
-    
-    ```
-    pip install --upgrade pip setuptools~=66.0.0
-    pip install "openmetadata-ingestion==1.2.4.0" notion-client PyYAML backoff rich sqllineage "sqlparse==0.5.3" "sqlfluff==2.3.5"
-    ```
+- **Notion Integration Token** (Internal Integration type).
     
 
 ---
 
-## ⚙️ Configuration
+## 📥 Quick Start
 
-Create a notion_config.yaml in the root directory.
+### 1. Environment Setup
 
-> **How to get the jwtToken:** Go to OpenMetadata UI ➔ Settings ➔ Bots ➔ ingestion-bot ➔ Auth Config ➔ Generate Token.
+codeBash
+
+```
+# Clone the repository
+git clone <your-repo-url>
+cd notion-om-connector
+
+# Create a clean Python 3.10 environment
+python3.10 -m venv venv
+source venv/bin/activate
+
+# Install the pinned "Safe Stack" for macOS/Linux
+pip install --upgrade pip setuptools~=66.0.0
+pip install "openmetadata-ingestion==1.2.4.0" notion-client PyYAML backoff rich sqllineage "sqlparse==0.5.3" "sqlfluff==2.3.5"
+```
+
+### 2. Configuration
+
+Create a notion_config.yaml in the root:
 
 codeYaml
 
@@ -93,30 +98,40 @@ source:
   notion_api_key: "secret_xxxxxxxxxxxxxxxxxxxxxxxx"
 sink:
   hostPort: "http://localhost:8585/api"
-  jwtToken: "eyJraWQiOiJHYV..." # Your OM Bot Token
+  jwtToken: "eyJraWQiOiJHYV..." # Get from OM Settings > Bots > ingestion-bot
 ```
 
----
-
-## 🚀 Running the Connector
-
-To ensure the environment stays stable on macOS and bypasses any system-level Python aliases, run using the direct path:
+### 3. Execution
 
 codeBash
 
 ```
+# Direct path execution ensures no system-alias interference
 ./venv/bin/python main.py
 ```
 
-### **The "Money Shot" (Visualizing Results)**
+---
+
+## 📸 The "Money Shot" (Visualizing Results)
 
 1. Open **[http://localhost:8585](https://www.google.com/url?sa=E&q=http%3A%2F%2Flocalhost%3A8585)**.
     
-2. Go to **Explore** and search for your Notion tables (e.g., Tasks).
+2. Navigate to **Explore** and search for Tasks.
     
 3. Click the **Lineage** tab.
     
-4. **Behold:** Your interactive, multi-hop Notion relationship graph.
+4. **Behold**: An interactive, automated relationship graph reconstructs your business context from Notion.
+    
+
+---
+
+## 🧪 Technical Hurdle Log
+
+- **The Regex Regression**: Identified that Python 3.11's updated regex engine breaks Pydantic validation in the OM 1.2.4 SDK. **Solution**: Environment hard-pinning to 3.10.
+    
+- **The UUID Paradox**: Lineage requires IDs that don't exist until after creation. **Solution**: Developed a real-time loopback listener to capture server responses during the table ingestion pass.
+    
+- **Permission Shadowing**: Notion search is limited by bot invitations. **Solution**: Built an autonomous "Rescue Pass" to retrieve metadata directly via ID for hidden relation targets.
     
 
 ---
@@ -129,30 +144,19 @@ codeText
 notion-om-connector/
 ├── src/
 │   └── notion_connector/        
-│       ├── __init__.py          
-│       ├── connection.py        # Notion API Client Factory
-│       ├── notion_source.py     # Main Ingestion Logic & Rescue Pass
-│       └── mapper.py            # Notion-to-OM Property Translator
+│       ├── connection.py        # Notion Client Factory
+│       ├── metadata.py          # Main Logic & Rescue Pass
+│       └── mapper.py            # Notion-to-OM Type Translator
 ├── .notion_state.json           # Incremental Sync Memory
-├── notion_config.yaml           # Secrets & Server Config
-└── main.py                      # Rich CLI Runner & Lineage Stitcher
+├── notion_config.yaml           # Secrets & Config
+└── main.py                      # Rich CLI Runner & Lineage Resolver
 ```
-
----
-
-## 🧪 Technical Hurdle Log (Hackathon Notes)
-
-- **The Regex Bug:** Discovered that Python 3.11's new regex engine breaks Pydantic validation in OM 1.2.4. **Solution:** Hard-pinned environment to Python 3.10.
-    
-- **The UUID Paradox:** Lineage in OM requires UUIDs that don't exist until after the table is created. **Solution:** Built a loopback dictionary that captures server responses in real-time to build the graph in a post-process pass.
-    
-- **Permission Shadowing:** Notion's search API often misses "Relation" targets. **Solution:** Implemented a **"Rescue Pass"** that uses databases.retrieve to force-fetch metadata for specific IDs found in relation properties.
-    
 
 ---
 
 ## 👨‍💻 Authors
 
-**Nishita Kumari** & **Monish Gowda**  
-Built for OpenMetadata's - Back to the Metadata Hackathon,
-April 2026
+**Nishita Kumari & Monish Gowda**  
+Built with ❤️ for OpenMetadata's - Back to the Metadata Hackathon, April 2026
+
+---
