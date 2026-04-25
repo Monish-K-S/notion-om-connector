@@ -143,6 +143,6 @@ notion-om-connector/
 ## 👨‍💻 Authors
 
 **Nishita Kumari & Monish Gowda**  
-Built with ❤️ for OpenMetadata's - Back to the Metadata Hackathon, April 2026
+Built for OpenMetadata's - Back to the Metadata Hackathon, April 2026
 
 ---
